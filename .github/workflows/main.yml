@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: "ductran95/cloudflare-gateway-pihole-scripts"
-          ref: "v1"
+          ref: "main"
 
       - name: Install Node.js
         uses: actions/setup-node@v3
