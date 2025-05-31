@@ -1,9 +1,8 @@
 import {
-  deleteZeroTrustListsAtOnce,
   deleteZeroTrustListsOneByOne,
   getZeroTrustLists,
 } from "./lib/api.js";
-import { FAST_MODE } from "./lib/constants.js";
+import { notifyWebhook } from "./lib/utils.js";
 
 (async () => {
   const { result: lists } = await getZeroTrustLists();
@@ -28,10 +27,8 @@ import { FAST_MODE } from "./lib/constants.js";
     `Got ${lists.length} lists, ${cgpsLists.length} of which are CGPS lists that will be deleted.`
   );
 
-  if (FAST_MODE) {
-    await deleteZeroTrustListsAtOnce(cgpsLists);
-    return;
-  }
+  console.log(`Deleting ${cgpsLists.length} lists...`);
 
   await deleteZeroTrustListsOneByOne(cgpsLists);
+  await notifyWebhook(`CF List Delete script finished running (${cgpsLists.length} lists)`);
 })();
